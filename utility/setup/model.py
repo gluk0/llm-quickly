@@ -4,6 +4,26 @@ import os
 import argparse
 from pathlib import Path
 
+def download_model(model_name: str ="TinyLlama/TinyLlama-1.1B-Chat-v1.0"):
+    """
+    Download and save a model locally
+    
+    Args:
+        model_name (str): HuggingFace model name/path
+        
+    Returns:
+        str: Path to saved model
+    """
+    print(f"Downloading model {model_name} locally...")
+    local_path = "tmp_model"
+    
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(model_name)
+    print(f"Saving model to {local_path}")
+    model.save_pretrained(local_path)
+    tokenizer.save_pretrained(local_path)
+    return local_path
+
 def upload_to_gcs(local_path: str, bucket_name: str, gcs_path: str):
 
     print(f"Uploading model to GCS bucket: {bucket_name}")
