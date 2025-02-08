@@ -27,7 +27,7 @@ def main():
     if args.command == 'setup-gcp':
         setup_gcp(args.project, args.sa_name, args.bucket)
     elif args.command == 'upload-model':
-        local_path = download_model(model_name=args.model_name)
+      #  local_path = download_model(model_name=args.model_name)
         upload_to_gcs(local_path, args.bucket, args.path)
         cleanup(local_path)
         print("\nSetup complete! Update your .env file with:")

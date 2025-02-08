@@ -29,11 +29,7 @@ async def startup_event():
         settings.gcs_model_path,
         settings.local_model_path
     )
-    # Loads the model from GCS on startup of the FastAPI using the router 
-    # deco .on_event method so we dont need to load this into a python
-    # default namespace, I find it confusing to read code like that where
-    # it's not stating the 'model' is loading and you need to understand 
-    # default namespaces in python to see the model is loaded. 
+
     model_manager.load_model()
 
 @router.post("/inference", response_model=InferenceResponse)
@@ -43,12 +39,10 @@ async def inference(request: InferenceRequest):
     
     Args:
         request: Inference request containing prompt and generation parameters
-    
     Returns:
         InferenceResponse: Generated text response
-    
     Raises:
-        HTTPException: With appropriate status codes for different error cases
+        HTTPException: With appropriate status codes for different error cases discovered. 
     """
     try:
         if model_manager.model is None or model_manager.tokenizer is None:
