@@ -1,6 +1,14 @@
-# llm-quickly
+```
+ __  __                                     _          __      __           
+[  |[  |                                   (_)        [  |  _ [  |          
+ | | | | _ .--..--. ______  .--. _ __   _  __   .---.  | | / ] | |  _   __  
+ | | | |[ `.-. .-. |______/ /'`\' |  | | |[  | / /'`\] | '' <  | | [ \ [  ] 
+ | | | | | | | | | |      | \__/ | | \_/ |,| | | \__.  | |`\ \ | |  \ '/ /  
+[___|___|___||__||__]      \__.; | '.__.'_[___]'.___.'[__|  \_|___|\_:  /   
+                               |__]                                \__.'    
+ A simple cookie-cutter for inferencing LLMs using FastAPI. 
+```
 
-A cookie-cutter FastAPI application for quickly serving LLMs.
 
 ## Prerequisites
 
