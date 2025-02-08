@@ -1,13 +1,13 @@
 .PHONY: setup test run clean lint format download-model load-test help
 
 PYTHON := python3
-PIP := pip3
-PYTEST := pytest
+POETRY := poetry
+PYTEST := $(POETRY) run pytest
 APP_MODULE := app.api.main:app
 
 help:
 	@echo "Available commands:"
-	@echo "make setup         - Install all dependencies"
+	@echo "make setup         - Install all dependencies using Poetry"
 	@echo "make dev-setup    - Install development dependencies"
 	@echo "make test         - Run tests"
 	@echo "make coverage     - Run tests with coverage report"
@@ -19,11 +19,10 @@ help:
 	@echo "make load-test    - Run load tests"
 
 setup:
-	$(PIP) install -r requirements.txt
+	$(POETRY) install --no-dev
 
 dev-setup: setup
-	$(PIP) install -r requirements-dev.txt
-	$(PIP) install black flake8 isort mypy
+	$(POETRY) install
 
 test:
 	$(PYTEST) tests/ -v
@@ -32,7 +31,7 @@ coverage:
 	$(PYTEST) tests/ --cov=app --cov-report=term-missing
 
 run:
-	uvicorn $(APP_MODULE) --reload --host 0.0.0.0 --port 8000
+	$(POETRY) run uvicorn $(APP_MODULE) --reload --host 0.0.0.0 --port 8000
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
@@ -46,14 +45,17 @@ clean:
 	find . -type d -name ".mypy_cache" -exec rm -rf {} +
 
 lint:
-	flake8 app/ tests/
-	black --check app/ tests/
+	$(POETRY) run flake8 app/ tests/
+	$(POETRY) run mypy app/ tests/
+	$(POETRY) run black --check app/ tests/
+	$(POETRY) run isort --check-only app/ tests/
+
 format:
-	black app/ tests/
-	isort app/ tests/
+	$(POETRY) run black app/ tests/
+	$(POETRY) run isort app/ tests/
 
 download-model:
 	./utility/scripts/download_model.sh
 
 load-test:
-	locust -f utility/scripts/load/locustfile.py 
+	$(POETRY) run locust -f utility/scripts/load/locustfile.py 

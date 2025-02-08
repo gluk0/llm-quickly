@@ -5,6 +5,6 @@ if __name__ == "__main__":
         "app:app",
         host="0.0.0.0",
         port=8000,
-        workers=4,
-        loop="asyncio"
+        reload=True,
+        workers=1
     ) 

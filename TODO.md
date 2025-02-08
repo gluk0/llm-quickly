@@ -4,7 +4,6 @@
 - [ ] Add request queuing system for high-load scenarios
 - [ ] Implement model caching to avoid reloading from GCS
 - [ ] Add batch processing endpoint for multiple prompts
-- [ ] Implement model quantization for faster inference
 - [ ] Add support for multiple model workers
 
 ## Security & Monitoring

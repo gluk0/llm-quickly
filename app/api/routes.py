@@ -88,7 +88,6 @@ async def inference(request: InferenceRequest):
         )
     
     except Exception as e:
-        # Log unexpected errors here
         raise HTTPException(
             status_code=500,
             detail=f"An unexpected error occurred: {str(e)}"

@@ -2,11 +2,13 @@
 
 set -e
 
+# Colors for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
-NC='\033[0m'
+NC='\033[0m' # No Color
 YELLOW='\033[1;33m'
 
+# Check Python version
 echo "Checking Python version..."
 PYTHON_VERSION=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 REQUIRED_VERSION="3.8"
@@ -18,16 +20,19 @@ else
     exit 1
 fi
 
-if [ ! -d "venv" ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv venv
-    echo -e "${GREEN}✓ Virtual environment created${NC}"
+# Check if Poetry is installed
+if ! command -v poetry &> /dev/null; then
+    echo "Installing Poetry..."
+    curl -sSL https://install.python-poetry.org | python3 -
+    echo -e "${GREEN}✓ Poetry installed${NC}"
 else
-    echo -e "${GREEN}✓ Virtual environment already exists${NC}"
+    echo -e "${GREEN}✓ Poetry already installed${NC}"
 fi
 
-source venv/bin/activate
+# Configure Poetry to create virtual environment in project directory
+poetry config virtualenvs.in-project true
 
+# Check if .env file exists
 if [ ! -f ".env" ]; then
     echo "Creating .env file from .env.example..."
     if [ -f ".env.example" ]; then
@@ -43,7 +48,7 @@ else
 fi
 
 echo "Installing dependencies..."
-make dev-setup
+poetry install
 
 echo "Creating necessary directories..."
 mkdir -p models/local/tinyllama
@@ -52,6 +57,6 @@ mkdir -p logs
 echo -e "\n${GREEN}Environment setup complete!${NC}"
 echo -e "${YELLOW}Next steps:${NC}"
 echo "1. Update the .env file with your configurations"
-echo "2. Run 'make download-model' to download the TinyLlama model"
-echo "3. Run 'make test' to ensure everything is working"
-echo "4. Run 'make run' to start the application" 
+echo "2. Run 'poetry run make download-model' to download the TinyLlama model"
+echo "3. Run 'poetry run make test' to ensure everything is working"
+echo "4. Run 'poetry run make run' to start the application" 
