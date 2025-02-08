@@ -57,9 +57,11 @@ for MODEL_FOLDER in $MODEL_FOLDERS; do
     #     --path "${LOCAL_PATH}"
 
     log_info "Uploading model to GCS bucket: ${BUCKET_NAME}"
-    python -m utility.cli upload-model \
+    python -m utility.setup.model_utils upload-model \
+        --local-path "${LOCAL_PATH}" \
         --bucket "${BUCKET_NAME}" \
-        --path "${LOCAL_PATH}"
+        --path "${LOCAL_PATH}" 
+
         
     log_info "Model download and upload complete!"
     log_info "You can now use this model with the following environment variables:"
