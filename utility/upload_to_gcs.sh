@@ -18,21 +18,8 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 log_info "Starting model download script..."
 cd "${PROJECT_ROOT}"
 
-if [ ! -d "venv" ]; then
-    log_info "Creating virtual environment..."
-    python3 -m venv venv
-fi
-
-log_info "Activating virtual environment..."
-source venv/bin/activate
-
-if [ ! -f "${PROJECT_ROOT}/requirements.txt" ]; then
-    log_error "Error: requirements.txt not found in ${PROJECT_ROOT}"
-    exit 1
-fi
-
-log_info "Installing requirements..."
-pip install -r "${PROJECT_ROOT}/requirements.txt"
+log_info "Setting up poetry..."
+poetry install 
 
 export BUCKET_NAME="rich-clarke-dev-models"
 
@@ -56,8 +43,8 @@ for MODEL_FOLDER in $MODEL_FOLDERS; do
     #     --model-name "TinyLlama/TinyLlama-1.1B-Chat-v1.0" \
     #     --path "${LOCAL_PATH}"
 
-    log_info "Uploading model to GCS bucket: ${BUCKET_NAME}"
-    python -m utility.setup.model_utils upload-model \
+    log_info "Uploading model to GCS bucket: ${BUCKET_NAME}" && 
+    poetry run python -m utility.setup.model_utils upload-model \
         --local-path "${LOCAL_PATH}" \
         --bucket "${BUCKET_NAME}" \
         --path "${LOCAL_PATH}" 
@@ -71,4 +58,4 @@ for MODEL_FOLDER in $MODEL_FOLDERS; do
     log_info "Model processing completed successfully!"
 done
 
-deactivate
+exit 0 
